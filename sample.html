@@ -606,34 +606,39 @@
                     </table>
                 </div>
                 
-                <!-- Comparison Chart -->
+                <!-- 차트 2개 가로 배치 + AI 인사이트 -->
                 <div class="mt-8">
-                    <h3 class="text-lg font-semibold mb-4">본인 vs TOP30 평균 비교 차트</h3>
-                    <div class="chart-container" style="height: 400px;">
-                        <canvas id="comparisonChart" width="800" height="400"></canvas>
+                    <!-- 두 차트를 가로로 배치 -->
+                    <div class="flex flex-col lg:flex-row gap-8 mb-8">
+                        <!-- TOP30 비교 차트 -->
+                        <div class="flex-1 bg-white rounded-lg p-6 card-shadow">
+                            <h3 class="text-lg font-semibold mb-4">본인 vs TOP30 평균 비교 차트</h3>
+                            <div class="chart-container" style="height: 400px;">
+                                <canvas id="comparisonChart" width="800" height="400"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- 레이더 차트 -->
+                        <div class="flex-1 bg-white rounded-lg p-6 card-shadow">
+                            <h3 class="text-lg font-semibold mb-4">종합 성과 비교 (정규화)</h3>
+                            <div class="chart-container" style="height: 400px;">
+                                <canvas id="radarChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <!-- 종합 성과 비교 (정규화) + AI 인사이트 2단 배치 -->
-                <div class="flex flex-col md:flex-row gap-8 mt-8">
-                  <!-- 레이더차트 -->
-                  <div class="flex-1 bg-white rounded-lg p-6 card-shadow">
-                    <h3 class="text-xl font-semibold mb-4">종합 성과 비교 (정규화)</h3>
-                    <div class="chart-container" style="height: 400px;">
-                      <canvas id="radarChart" width="400" height="400"></canvas>
+                    
+                    <!-- AI 인사이트 (전체 폭) -->
+                    <div class="bg-blue-50 rounded-lg p-6 card-shadow">
+                        <h3 class="text-lg font-semibold text-blue-800 mb-3">
+                            <i class="fas fa-robot mr-2"></i>AI 인사이트
+                        </h3>
+                        <ul class="space-y-2 text-blue-700 text-sm">
+                            <li><strong>문제:</strong> 클릭율, 전환율이 TOP30 평균 대비 각각 22%, 18% 낮음</li>
+                            <li><strong>원인:</strong> 썸네일/타이틀 경쟁력, 구매 프로세스 복잡성</li>
+                            <li><strong>솔루션:</strong> 썸네일 리뉴얼, 상세페이지 A/B 테스트, 결제 UI 개선</li>
+                            <li><strong>기대효과:</strong> 클릭율 +1.2%p, 전환율 +0.7%p, 월 매출 +20% 예상</li>
+                        </ul>
                     </div>
-                  </div>
-                  <!-- AI 인사이트 -->
-                  <div class="flex-1 bg-blue-50 rounded-lg p-6 card-shadow flex flex-col justify-center">
-                    <h3 class="text-lg font-semibold text-blue-800 mb-3">
-                        <i class="fas fa-robot mr-2"></i>AI 인사이트
-                    </h3>
-                    <ul class="space-y-2 text-blue-700 text-sm">
-                        <li><strong>문제:</strong> 클릭율, 전환율이 TOP30 평균 대비 각각 22%, 18% 낮음</li>
-                        <li><strong>원인:</strong> 썸네일/타이틀 경쟁력, 구매 프로세스 복잡성</li>
-                        <li><strong>솔루션:</strong> 썸네일 리뉴얼, 상세페이지 A/B 테스트, 결제 UI 개선</li>
-                        <li><strong>기대효과:</strong> 클릭율 +1.2%p, 전환율 +0.7%p, 월 매출 +20% 예상</li>
-                    </ul>
-                  </div>
                 </div>
             </div>
         </section>
@@ -1337,14 +1342,6 @@
                         borderRadius: 12,
                         borderSkipped: false,
                         maxBarThickness: 32
-                    },
-                    {
-                        label: 'TOP30 평균',
-                        data: [100, 100, 100, 100, 100, 100, 100, 100, 100],
-                        backgroundColor: 'rgba(156, 163, 175, 0.5)',
-                        borderRadius: 12,
-                        borderSkipped: false,
-                        maxBarThickness: 32
                     }
                 ]
             },
@@ -1378,10 +1375,27 @@
                     },
                     title: {
                         display: true,
-                        text: '본인 vs TOP30 평균 정규화 비교 (100=평균)',
+                        text: '본인 vs TOP30 평균 정규화 비교 (100% = TOP30 평균)',
                         font: { size: 18, weight: 'bold' },
                         color: '#222',
                         padding: { top: 10, bottom: 20 }
+                    },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                yMin: 100,
+                                yMax: 100,
+                                borderColor: 'rgba(156, 163, 175, 0.8)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                label: {
+                                    content: 'TOP30 평균 (100%)',
+                                    enabled: true,
+                                    position: 'end'
+                                }
+                            }
+                        }
                     }
                 },
                 animation: {
